@@ -180,6 +180,7 @@
 #include "taskAK5394A.h"
 #include "cycle_counter.h"
 #include "ssc_i2s.h"
+#include "pcm1794_dig_out.h"
 
 /*
  *  A few global variables.
@@ -234,14 +235,14 @@ int i;
 
 	// Make sure Watchdog timer is disabled initially (otherwise it interferes upon restart)
 	wdt_disable();
-
+#if 0
 	// The reason this is put as early as possible in the code
 	// is that AK5394A has to be put in reset when the clocks are not
 	// fully set up.  Otherwise the chip will overheat
 	for (i=0; i< 1000; i++) gpio_clr_gpio_pin(AK5394_RSTN);	// put AK5394A in reset, and use this to delay the start up
 															// time for various voltages (eg to the XO) to stablize
 															// Not used in QNKTC / Henry Audio hardware
-
+#endif
 	// Set CPU and PBA clock at slow (12MHz) frequency
 	if( PM_FREQ_STATUS_FAIL==pm_configure_clocks(&pm_freq_param_slow) )
 		return 42;
@@ -401,6 +402,7 @@ int i;
 
 
 //clear samplerate indication
+#if 0
 #if defined(HW_GEN_AB1X)
 	gpio_clr_gpio_pin(SAMPLEFREQ_VAL0);
 	gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
@@ -415,7 +417,7 @@ int i;
 		mobo_led(FLED_RED);
 	}
 #endif
-
+#endif
 	// Initialize Real Time Counter
 	rtc_init(&AVR32_RTC, RTC_OSC_RC, 0);	// RC clock at 115kHz
 	rtc_disable_interrupt(&AVR32_RTC);
@@ -459,10 +461,11 @@ int i;
 	wm8805_reset(WM8805_RESET_END);			// Early hardware reset of WM8805 because GPIO is interpreted for config
 #endif
 
-
+#if 0
 	if (FEATURE_FILTER_FIR) gpio_clr_gpio_pin(GPIO_PCM5102_FILTER);
 	else gpio_set_gpio_pin(GPIO_PCM5102_FILTER);
-
+#endif
+	pcm1794_init();
 	// Initialize interrupt controller
 	INTC_init_interrupts();
 

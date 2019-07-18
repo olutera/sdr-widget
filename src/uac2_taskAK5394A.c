@@ -78,9 +78,11 @@ void uac2_AK5394A_task_init(void) {
 	AK5394A_task_init(FALSE);
 
 //clear samplerate indication FIX: move to different _init() routine
+	#if 0
 #if defined(HW_GEN_AB1X)
 	gpio_clr_gpio_pin(SAMPLEFREQ_VAL1);
 	gpio_set_gpio_pin(SAMPLEFREQ_VAL0);
+#endif
 #endif
 
 	xTaskCreate(uac2_AK5394A_task,

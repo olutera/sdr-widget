@@ -88,6 +88,7 @@
 #include "device_audio_task.h"
 #include "uac2_device_audio_task.h"
 #include "taskAK5394A.h"
+#include "pcm1794_dig_out.h"
 
 //_____ M A C R O S ________________________________________________________
 
@@ -248,6 +249,7 @@ void uac2_freq_change_handler() {
 		mobo_xo_select(current_freq.frequency, MOBO_SRC_UAC2); // GPIO XO control and frequency indication
 		mobo_clock_division(current_freq.frequency);
 #endif
+		pcm1794_sampleLed_set(current_freq.frequency);
 
 		/*
 		 poolingFreq = 8000 / (1 << (EP_INTERVAL_2_HS - 1));
@@ -324,9 +326,10 @@ void uac2_freq_change_handler() {
 			pdca_disable_interrupt_reload_counter_zero(PDCA_CHANNEL_SSC_RX);
 			pdca_disable(PDCA_CHANNEL_SSC_RX);
 #endif
-
-			gpio_clr_gpio_pin(AK5394_DFS0); // H L -> 192khz
-			gpio_set_gpio_pin(AK5394_DFS1);
+			if (FEATURE_ADC_AK5394A) {
+				gpio_clr_gpio_pin(AK5394_DFS0); // H L -> 192khz
+				gpio_set_gpio_pin(AK5394_DFS1);
+			}
 
 			FB_rate = (176 << 14) + ((1 << 14) * 4) / 10;
 			FB_rate_initial = FB_rate; // BSB 20131031 Record FB_rate as it was set by control system

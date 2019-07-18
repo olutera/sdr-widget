@@ -88,6 +88,7 @@
 #include "device_audio_task.h"
 #include "uac1_device_audio_task.h"
 #include "taskAK5394A.h"
+#include "pcm1794_dig_out.h"
 
 
 //_____ M A C R O S ________________________________________________________
@@ -769,7 +770,7 @@ void audio_set_cur(void)
    }
    */
 
-
+   pcm1794_sampleLed_set(current_freq.frequency);
    Usb_ack_control_out_received_free();
    Usb_ack_control_in_ready_send();
    while (!Is_usb_control_in_ready());

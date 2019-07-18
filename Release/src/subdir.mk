@@ -42,6 +42,7 @@ C_SRCS += \
 ../src/usb_descriptors.c \
 ../src/usb_specific_request.c \
 ../src/widget.c \
+../src/pcm1794_dig_out.c \
 ../src/wm8805.c 
 
 
@@ -84,6 +85,7 @@ OBJS += \
 ./src/usb_descriptors.o \
 ./src/usb_specific_request.o \
 ./src/widget.o \
+./src/pcm1794_dig_out.o \
 ./src/wm8805.o 
 
 
@@ -127,6 +129,7 @@ C_DEPS += \
 ./src/usb_descriptors.d \
 ./src/usb_specific_request.d \
 ./src/widget.d \
+./src/pcm1794_dig_out.d \
 ./src/wm8805.d
 
 
